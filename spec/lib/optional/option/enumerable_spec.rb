@@ -1,9 +1,21 @@
 require 'spec_helper'
 
+class SchrodingerCat
+  def state
+    Some[Struct.new(:alive).new(Some[true])]
+  end
+end
 describe Option::Enumerable do
 
   let (:cat) { Cat.new("MOGGIE!") }
   let (:dog) { Dog.new("DOGGIE!") }
+  let(:optional_cat) { SchrodingerCat.new }
+
+  describe "#flat_map_through" do
+    it "allows mapping through multiple methods and flattens the options" do
+      Some[optional_cat].flat_map_through(:state, :alive).should eq Some[true]
+    end
+  end
 
   describe "#map_through" do
     it "allows mapping through multiple methods" do
