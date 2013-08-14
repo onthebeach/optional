@@ -64,4 +64,11 @@ describe Some do
     end
   end
 
+  context "Some[nil]" do
+    subject { Some[nil] }
+
+    it { should be_none }
+
+  end
+
 end

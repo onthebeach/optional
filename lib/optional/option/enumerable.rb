@@ -15,11 +15,11 @@ module Option
     end
 
     def flat_map_through(*methods)
-      map(&methods.reduce(-> x {Option[x]}) { |acc, m| -> x { acc[x].map(&m).flatten } }).flatten
+      flat_map(&methods.reduce(-> x {Option[x]}) { |acc, m| -> x { acc[x].flat_map(&m)} })
     end
 
     def map_through(*methods)
-      map &methods.reduce(-> x {x}){ |acc, m| -> x {acc[x].send(m)} }
+      flat_map(&methods.reduce(-> x {Option[x]}){ |acc, m| -> x {acc[x].map(&m)} })
     end
 
     def map
