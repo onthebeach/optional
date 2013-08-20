@@ -14,8 +14,12 @@ module Option
       map { |v| methods.map { |m| v.send(m) } }
     end
 
+    def flat_map_through(*methods)
+      flat_map(&methods.reduce(-> x {Option[x]}) { |acc, m| -> x { acc[x].flat_map(&m)} })
+    end
+
     def map_through(*methods)
-      map &methods.reduce(lambda { |x| x}) { |acc, m| lambda { |x| acc.call(x).send(m) } }
+      flat_map(&methods.reduce(-> x {Option[x]}){ |acc, m| -> x {acc[x].map(&m)} })
     end
 
     def map

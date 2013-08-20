@@ -47,7 +47,11 @@ class Some
   end
 
   def self.[](*values)
-    new(values.size == 1 ? values.first : values)
+    if values.size == 1
+      values.first.nil? ? None : new(values.first)
+    else
+      new(values)
+    end
   end
 
 end
